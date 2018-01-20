@@ -33,11 +33,6 @@ public class GuiRespawnLocations extends GuiScreen {
 
     @Override
     public void initGui() {
-        super.initGui();
-        this.buttonList.clear();
-        this.targets = new TargetPoint4d[0];
-        this.labels = new String[0];
-
         int x = width / 2;
         int y = width / 10 + 10;
         labels = new String[this.targets.length];
