@@ -71,7 +71,7 @@ public class CapabilityHandler {
         EntityPlayer player = event.getEntityPlayer();
         if(state.getBlock().isBed(state, world, pos, player)) {
             IRespawnLocations locations = player.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
-            boolean result = locations.addRespawnLocation(new TargetPoint4d(player.getBedLocation(), player.dimension, "Bed", false));
+            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos, player.dimension, "Bed", false));
             if(result && world.isDaytime()) {
                 event.setCanceled(true);
                 player.sendStatusMessage(new TextComponentTranslation(Reference.MODID + ".setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
