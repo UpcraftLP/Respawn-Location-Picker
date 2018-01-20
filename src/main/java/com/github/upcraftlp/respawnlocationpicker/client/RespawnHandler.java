@@ -1,6 +1,5 @@
 package com.github.upcraftlp.respawnlocationpicker.client;
 
-import com.github.upcraftlp.respawnlocationpicker.Main;
 import com.github.upcraftlp.respawnlocationpicker.Reference;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnPlayer;
@@ -8,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNo;
-import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,4 +40,5 @@ public class RespawnHandler {
             }
         }
     }
+
 }

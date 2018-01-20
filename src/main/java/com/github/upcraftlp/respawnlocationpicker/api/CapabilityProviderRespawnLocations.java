@@ -1,5 +1,6 @@
-package com.github.upcraftlp.respawnlocationpicker.capability;
+package com.github.upcraftlp.respawnlocationpicker.api;
 
+import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -12,7 +13,7 @@ import javax.annotation.Nullable;
 /**
  * @author UpcraftLP
  */
-public class CapabilityHandler implements ICapabilitySerializable<NBTBase> {
+public class CapabilityProviderRespawnLocations implements ICapabilitySerializable<NBTBase> {
 
     @CapabilityInject(IRespawnLocations.class)
     public static final Capability<IRespawnLocations> CAPABILITY = null;

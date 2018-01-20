@@ -1,7 +1,9 @@
 package com.github.upcraftlp.respawnlocationpicker.proxy;
 
+import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.capability.DefaultRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.command.CommandAddRespawnPoint;
+import com.github.upcraftlp.respawnlocationpicker.command.CommandClearRespawns;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnPlayer;
@@ -33,6 +35,7 @@ public abstract class CommonProxy {
     }
 
     public void serverStarting(FMLServerStartingEvent event) {
-        
+        event.registerServerCommand(new CommandClearRespawns());
+        event.registerServerCommand(new CommandAddRespawnPoint());
     }
 }

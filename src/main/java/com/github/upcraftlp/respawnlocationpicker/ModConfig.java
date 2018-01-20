@@ -14,7 +14,7 @@ import static com.github.upcraftlp.respawnlocationpicker.Reference.MODID;
 @Config(modid = MODID, name = "craftdevmods/" + MODID) //--> /config/craftdevmods/respawnlocationpicker.cfg
 public class ModConfig {
 
-    @Config.RangeInt(min = 0, max = 20)
+    @Config.RangeInt(min = 0, max = 100)
     @Config.Comment("maximum number of respawn locations a player can have")
     public static int respawnLocations = 10;
 
