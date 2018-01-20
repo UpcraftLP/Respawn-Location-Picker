@@ -2,6 +2,7 @@ package com.github.upcraftlp.respawnlocationpicker.event;
 
 import com.github.upcraftlp.respawnlocationpicker.Reference;
 import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -17,7 +18,7 @@ public class AttachCapabilityHandler {
     public static final ResourceLocation CAPABILITY = new ResourceLocation(Reference.MODID, "respawns");
 
     @SubscribeEvent
-    public static void onAttachCapability(AttachCapabilitiesEvent<EntityPlayerMP> event) {
-        event.addCapability(CAPABILITY, new CapabilityHandler());
+    public static void onAttachCapability(AttachCapabilitiesEvent<Entity> event) {
+        if(event.getObject() instanceof EntityPlayerMP) event.addCapability(CAPABILITY, new CapabilityHandler());
     }
 }

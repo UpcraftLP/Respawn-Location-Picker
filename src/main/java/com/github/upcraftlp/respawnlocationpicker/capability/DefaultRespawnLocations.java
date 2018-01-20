@@ -1,5 +1,6 @@
 package com.github.upcraftlp.respawnlocationpicker.capability;
 
+import com.github.upcraftlp.respawnlocationpicker.Main;
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
 import com.google.common.collect.Lists;
@@ -35,7 +36,7 @@ public class DefaultRespawnLocations implements IRespawnLocations {
         @Nullable
         @Override
         public NBTBase writeNBT(Capability<IRespawnLocations> capability, IRespawnLocations instance, EnumFacing side) {
-            NBTTagList list = new NBTTagList();
+            final NBTTagList list = new NBTTagList();
             instance.getRespawnLocations(null, ModConfig.respawnLocations).forEach(targetPoint4d -> list.appendTag(targetPoint4d.serializeNBT()));
             return list;
         }

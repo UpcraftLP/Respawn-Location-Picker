@@ -19,6 +19,10 @@ public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketR
 
     public TargetPoint4d[] targets;
 
+    public PacketRespawnLocations() {
+        //NO-OP
+    }
+
     public PacketRespawnLocations(List<TargetPoint4d> targets) {
         this.targets = targets.toArray(new TargetPoint4d[targets.size()]);
     }
@@ -44,7 +48,8 @@ public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketR
 
     @Override
     public IMessage onMessage(PacketRespawnLocations message, MessageContext ctx) {
-        Minecraft.getMinecraft().displayGuiScreen(new GuiRespawnLocations(message.targets));
+        Minecraft mc = Minecraft.getMinecraft();
+        mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiRespawnLocations(message.targets)));
         return null;
     }
 }

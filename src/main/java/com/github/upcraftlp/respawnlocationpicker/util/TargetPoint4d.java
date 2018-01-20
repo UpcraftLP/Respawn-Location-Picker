@@ -74,7 +74,7 @@ public class TargetPoint4d implements INBTSerializable<NBTTagCompound> {
         nbt.setInteger("Z", this.z);
         nbt.setInteger("dimension", this.dimension);
         nbt.setString("name", this.name);
-        return null;
+        return nbt;
     }
 
     @Override
