@@ -25,6 +25,9 @@ public class ModConfig {
     @Config.Comment("should players be allowed to add spawnpoints using /addspawnpoint")
     public static boolean allowCustomSpawnpoints = true;
 
+    @Config.Comment("will players get the coordinates, biome, both or none if hovering over a waypoint?")
+    public static SpawnPointDisplayMode displayMode = SpawnPointDisplayMode.BOTH;
+
     @Mod.EventBusSubscriber(modid = MODID)
     public static class Handler {
 
@@ -33,6 +36,28 @@ public class ModConfig {
             if(event.getModID().equals(Reference.MODID)) {
                 ConfigManager.load(Reference.MODID, Config.Type.INSTANCE);
             }
+        }
+    }
+
+    public enum SpawnPointDisplayMode {
+        NONE(false, false),
+        BIOME(false,  true),
+        COORDINATES(true, false),
+        BOTH(true, true);
+
+        private boolean posIncluded, biomeIncluded;
+
+        SpawnPointDisplayMode(boolean posIncluded, boolean biomeIncluded) {
+            this.posIncluded = posIncluded;
+            this.biomeIncluded = biomeIncluded;
+        }
+
+        public boolean biomeIncluded() {
+            return this.biomeIncluded;
+        }
+
+        public boolean posIncluded() {
+            return this.posIncluded;
         }
     }
     

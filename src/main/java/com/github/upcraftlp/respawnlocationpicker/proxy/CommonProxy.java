@@ -1,6 +1,6 @@
 package com.github.upcraftlp.respawnlocationpicker.proxy;
 
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.capability.DefaultRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.command.CommandAddRespawnPoint;
 import com.github.upcraftlp.respawnlocationpicker.command.CommandClearRespawns;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class CommonProxy {
+public class CommonProxy {
 
     private static int packetID = 0;
 

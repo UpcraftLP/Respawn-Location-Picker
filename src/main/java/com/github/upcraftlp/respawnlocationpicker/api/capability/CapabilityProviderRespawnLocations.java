@@ -1,5 +1,6 @@
-package com.github.upcraftlp.respawnlocationpicker.api;
+package com.github.upcraftlp.respawnlocationpicker.api.capability;
 
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;

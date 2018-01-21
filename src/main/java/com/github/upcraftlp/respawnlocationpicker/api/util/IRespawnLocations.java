@@ -1,4 +1,4 @@
-package com.github.upcraftlp.respawnlocationpicker.api;
+package com.github.upcraftlp.respawnlocationpicker.api.util;
 
 import net.minecraft.util.math.BlockPos;
 

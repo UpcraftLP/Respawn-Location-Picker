@@ -1,14 +1,16 @@
 package com.github.upcraftlp.respawnlocationpicker.net.packet;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.GameType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -47,31 +49,36 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         EntityPlayerMP playerMP = netHandler.player;
         IRespawnLocations locations = playerMP.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
 
-        TargetPoint4d target;
-        if(message.targetIndex == 0 && ModConfig.showWorldSpawn) {
-            int dimension = playerMP.getSpawnDimension();
-            World world = server.getWorld(dimension);
-            if(!world.provider.canRespawnHere()) {
-                dimension = world.provider.getRespawnDimension(playerMP);
-            }
-            target = new TargetPoint4d(server.getWorld(dimension).getSpawnPoint(), dimension, "World Spawn");
-        }
-        else {
-            target = locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex - 1);
-        }
-        playerMP.setSpawnDimension(target.getDimension());
-        playerMP.setSpawnChunk(target.getPosition(), true, target.getDimension());
+        TargetPoint4d target = null;
+        TargetPoint4d destination; //needed for lambda expression
 
-        //netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
-        server.addScheduledTask(() -> {
-            playerMP.markPlayerActive();
-            netHandler.player = server.getPlayerList().recreatePlayerEntity(playerMP, target.getDimension(), false);
-            if (server.isHardcore()) {
-                netHandler.player.setGameType(GameType.SPECTATOR);
-                netHandler.player.getServerWorld().getGameRules().setOrCreateGameRule("spectatorsGenerateChunks", "false");
+
+        if(ModConfig.showWorldSpawn || locations.getLocationCount() == 0) {
+            if(message.targetIndex == 0) {
+                World world = server.getWorld(playerMP.getSpawnDimension());
+                if(!world.provider.canRespawnHere()) {
+                    world = server.getWorld(world.provider.getRespawnDimension(playerMP));
+                }
+                BlockPos spawn = world.getSpawnPoint();
+                target = new TargetPoint4d(spawn, world.provider.getDimension(), "World Spawn", TargetHelper.getBiome(world, spawn));
             }
+            message.targetIndex -= 1;
+        }
+        destination = target != null ? target : locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
+        playerMP.setSpawnDimension(destination.getDimension());
+        playerMP.setSpawnChunk(destination.getPosition(), true, destination.getDimension());
+
+
+        server.addScheduledTask(() -> {
+            netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
+            //playerMP.markPlayerActive();
+            //netHandler.player = server.getPlayerList().recreatePlayerEntity(playerMP, destination.getDimension(), false);
+            //if (server.isHardcore()) {
+            //    netHandler.player.setGameType(GameType.SPECTATOR);
+            //    netHandler.player.getServerWorld().getGameRules().setOrCreateGameRule("spectatorsGenerateChunks", "false");
+            //}
             netHandler.player.closeScreen();
-            netHandler.player.setLocationAndAngles(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, 0.0F, 0.0F);
+            netHandler.player.setLocationAndAngles(destination.getX() + 0.5D, destination.getY(), destination.getZ() + 0.5D, 0.0F, 0.0F);
         });
         return null;
     }

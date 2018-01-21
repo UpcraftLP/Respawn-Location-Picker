@@ -1,13 +1,15 @@
 package com.github.upcraftlp.respawnlocationpicker.net.packet;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -38,14 +40,14 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
         int listLength = ModConfig.respawnLocations;
         if(ModConfig.showWorldSpawn) listLength -= 1;
         List<TargetPoint4d> targets = Lists.newArrayList();
-        if(ModConfig.showWorldSpawn) {
+        if(ModConfig.showWorldSpawn || respawnLocations.getLocationCount() == 0) {
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
             int dimension = player.world.provider.getRespawnDimension(player);
             World respawnWorld = server.getWorld(dimension);
-            targets.add(new TargetPoint4d(respawnWorld.getSpawnPoint(), dimension, "World Spawn"));
+            BlockPos spawn = respawnWorld.getSpawnPoint();
+            targets.add(new TargetPoint4d(spawn, dimension, "World Spawn", TargetHelper.getBiome(respawnWorld, spawn)));
         }
         targets.addAll(respawnLocations.getRespawnLocations(listLength));
-
         return new PacketRespawnLocations(targets);
     }
 }

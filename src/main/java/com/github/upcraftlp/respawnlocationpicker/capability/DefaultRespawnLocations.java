@@ -1,8 +1,8 @@
 package com.github.upcraftlp.respawnlocationpicker.capability;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagList;

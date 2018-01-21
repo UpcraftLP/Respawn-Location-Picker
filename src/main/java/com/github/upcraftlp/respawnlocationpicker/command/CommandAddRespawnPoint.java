@@ -1,9 +1,10 @@
 package com.github.upcraftlp.respawnlocationpicker.command;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -37,7 +38,7 @@ public class CommandAddRespawnPoint extends CommandBase {
         if(args.length == 2 && !sender.canUseCommand(server.getOpPermissionLevel(), this.getName())) {
             sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.permissionOtherPlayers").setStyle(new Style().setColor(TextFormatting.RED)));
         }
-        TargetPoint4d target = new TargetPoint4d(player.getPosition(), player.dimension, args[0]);
+        TargetPoint4d target = new TargetPoint4d(player.getPosition(), player.dimension, args[0], TargetHelper.getBiome(player.world, player.getPosition()));
         EntityPlayer targetPlayer = args.length == 2 ? getPlayer(server, sender, args[1]) : player;
         IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
         if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.success", args[0]));
@@ -46,6 +47,6 @@ public class CommandAddRespawnPoint extends CommandBase {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return ModConfig.allowCustomSpawnpoints ? 0 : super.getRequiredPermissionLevel();
+        return ModConfig.allowCustomSpawnpoints ? 0 : 2;
     }
 }

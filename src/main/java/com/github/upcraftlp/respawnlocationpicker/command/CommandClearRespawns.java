@@ -1,7 +1,7 @@
 package com.github.upcraftlp.respawnlocationpicker.command;
 
-import com.github.upcraftlp.respawnlocationpicker.api.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
