@@ -46,6 +46,6 @@ public class CommandAddRespawnPoint extends CommandBase {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return 0;
+        return ModConfig.allowCustomSpawnpoints ? 0 : super.getRequiredPermissionLevel();
     }
 }
