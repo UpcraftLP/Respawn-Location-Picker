@@ -11,6 +11,8 @@ commands.addSpawnPoint.fail=Failed to add repsawn point: %s is already a respawn
 
 commands.clearSpawnPoints.usage=/clearSpawnPoints [player]
 commands.clearSpawnPoints.success=Successfully cleared %s spawn points
+
+#Other
 respawns.setBedSpawn.success=Bed spawn point saved!
 
 

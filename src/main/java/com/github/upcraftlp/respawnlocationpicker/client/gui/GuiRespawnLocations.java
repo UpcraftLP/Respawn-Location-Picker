@@ -92,13 +92,17 @@ public class GuiRespawnLocations extends GuiScreen {
                     .append(", ")
                     .append(target.getY())
                     .append(", ")
-                    .append(target.getZ()).append("]");
+                    .append(target.getZ()).append("]")
+                    .append(includeFormatting ? TextFormatting.RESET : "");
         }
         if(target.hasBiome()) {
             builder
+                    .append(" ")
+                    .append(includeFormatting ? TextFormatting.BLUE : "")
                     .append("(")
                     .append(target.getBiome())
-                    .append(")");
+                    .append(")")
+                    .append(includeFormatting ? TextFormatting.RESET : "");
         }
         return builder.toString();
     }
