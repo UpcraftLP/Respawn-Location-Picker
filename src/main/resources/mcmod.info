@@ -1,12 +1,12 @@
 [
 {
   "modid": "${modid}",
-  "name": "${mod_name}",
-  "description": "${mod_description}",
+  "name": "${name}",
+  "description": "${description}",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "${url}",
-  "updateUrl": "${update_url}",
+  "updateUrl": "${updateUrl}",
   "authorList": ["UpcraftLP"],
   "credits": "(C)${year} UpcraftLP",
   "logoFile": "",
