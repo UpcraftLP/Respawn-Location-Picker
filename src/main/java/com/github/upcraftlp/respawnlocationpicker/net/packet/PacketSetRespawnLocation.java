@@ -54,13 +54,13 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
             if(!world.provider.canRespawnHere()) {
                 dimension = world.provider.getRespawnDimension(playerMP);
             }
-            target = new TargetPoint4d(server.getWorld(dimension).getSpawnPoint(), dimension, "World Spawn", true);
+            target = new TargetPoint4d(server.getWorld(dimension).getSpawnPoint(), dimension, "World Spawn");
         }
         else {
             target = locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
         }
         playerMP.setSpawnDimension(target.getDimension());
-        playerMP.setSpawnChunk(target.getPosition(), target.isBed, target.getDimension());
+        playerMP.setSpawnChunk(target.getPosition(), true, target.getDimension());
 
         //netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
         server.addScheduledTask(() -> {

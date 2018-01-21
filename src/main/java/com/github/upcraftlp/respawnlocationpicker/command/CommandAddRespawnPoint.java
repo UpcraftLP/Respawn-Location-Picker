@@ -37,7 +37,7 @@ public class CommandAddRespawnPoint extends CommandBase {
         if(args.length == 2 && !sender.canUseCommand(server.getOpPermissionLevel(), this.getName())) {
             sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.permissionOtherPlayers").setStyle(new Style().setColor(TextFormatting.RED)));
         }
-        TargetPoint4d target = new TargetPoint4d(player.getPosition(), player.dimension, args[0], true);
+        TargetPoint4d target = new TargetPoint4d(player.getPosition(), player.dimension, args[0]);
         EntityPlayer targetPlayer = args.length == 2 ? getPlayer(server, sender, args[1]) : player;
         IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
         if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.success", args[0]));

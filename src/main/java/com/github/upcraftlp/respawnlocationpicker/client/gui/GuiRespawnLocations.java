@@ -3,14 +3,12 @@ package com.github.upcraftlp.respawnlocationpicker.client.gui;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketSetRespawnLocation;
 import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
-import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 
@@ -19,7 +17,7 @@ import java.io.IOException;
  */
 public class GuiRespawnLocations extends GuiScreen {
 
-    private TargetPoint4d[] targets;
+    private final TargetPoint4d[] targets;
     private String[] labels;
     private static final int
             BUTTON_HEIGHT = 20,
@@ -48,14 +46,6 @@ public class GuiRespawnLocations extends GuiScreen {
             int xPos = x - (BUTTON_WIDTH + 5) + ((i % 2) * (BUTTON_WIDTH + 10));
             this.buttonList.add(new GuiButtonExt(i, xPos, y + (i / 2) * (BUTTON_HEIGHT + 5), BUTTON_WIDTH, BUTTON_HEIGHT, targets[i].getName()));
         }
-    }
-
-    @Override
-    public void onGuiClosed() {
-        super.onGuiClosed();
-        this.buttonList.clear();
-        this.targets = new TargetPoint4d[0];
-        this.labels = new String[0];
     }
 
     @Override

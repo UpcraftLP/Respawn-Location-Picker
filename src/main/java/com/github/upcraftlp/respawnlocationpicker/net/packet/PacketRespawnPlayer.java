@@ -4,6 +4,7 @@ import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.api.CapabilityProviderRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -36,13 +37,15 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
         IRespawnLocations respawnLocations = player.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
         int listLength = ModConfig.respawnLocations;
         if(ModConfig.showWorldSpawn) listLength -= 1;
-        List<TargetPoint4d> targets = respawnLocations.getRespawnLocations(listLength);
+        List<TargetPoint4d> targets = Lists.newArrayList();
         if(ModConfig.showWorldSpawn) {
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
             int dimension = player.world.provider.getRespawnDimension(player);
             World respawnWorld = server.getWorld(dimension);
-            targets.add(0, new TargetPoint4d(respawnWorld.getSpawnPoint(), dimension, "World Spawn", true));
+            targets.add(new TargetPoint4d(respawnWorld.getSpawnPoint(), dimension, "World Spawn"));
         }
+        targets.addAll(respawnLocations.getRespawnLocations(listLength));
+
         return new PacketRespawnLocations(targets);
     }
 }

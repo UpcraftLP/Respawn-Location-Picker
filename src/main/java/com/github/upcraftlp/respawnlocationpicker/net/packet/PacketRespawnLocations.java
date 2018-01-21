@@ -33,7 +33,7 @@ public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketR
         int length = buf.readInt();
         this.targets = new TargetPoint4d[length];
         for(int i = 0; i < length; i++) {
-            targets[i] = new TargetPoint4d(BlockPos.fromLong(buf.readLong()), buf.readInt(), ByteBufUtils.readUTF8String(buf), buf.readBoolean());
+            targets[i] = new TargetPoint4d(BlockPos.fromLong(buf.readLong()), buf.readInt(), ByteBufUtils.readUTF8String(buf));
         }
     }
 
@@ -44,7 +44,6 @@ public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketR
             buf.writeLong(target.getPosition().toLong());
             buf.writeInt(target.getDimension());
             ByteBufUtils.writeUTF8String(buf, target.getName());
-            buf.writeBoolean(!target.isBed);
         }
     }
 

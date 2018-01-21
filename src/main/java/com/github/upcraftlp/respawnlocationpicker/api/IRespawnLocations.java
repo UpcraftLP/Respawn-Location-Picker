@@ -11,8 +11,9 @@ import java.util.List;
 public interface IRespawnLocations {
 
     List<TargetPoint4d> getRespawnLocations(int listLength);
-    default void addRespawnLocation(BlockPos pos, int dimension, String name, boolean forced) {
-        this.addRespawnLocation(new TargetPoint4d(pos, dimension, name, forced));
+
+    default void addRespawnLocation(BlockPos pos, int dimension, String name) {
+        this.addRespawnLocation(new TargetPoint4d(pos, dimension, name));
     }
 
     boolean addRespawnLocation(TargetPoint4d target);
