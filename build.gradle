@@ -145,7 +145,7 @@ dependencies {
     //JEI (runtime only)
     runtime "mezz.jei:jei_${project.mc_version}:${project.jei_version}"
 
-    deobfCompile "com.github.blay09:Waystones:1.12-SNAPSHOT"
+    deobfProvided "com.github.blay09:Waystones:1.12-SNAPSHOT"
 
 }
 tasks.build.dependsOn signJar
@@ -197,7 +197,7 @@ processResources
         include 'mcmod.info'
                 
         // replace version and mcversion
-        expand 'modid':project.modid, 'name':project.mod_name, 'description':project.mod_description, 'version':version, 'mcversion':project.minecraft.version, 'url':project.url, 'updateUrl':project.update_json, 'year':String.valueOf(Year.now().getValue())
+        expand 'modid':project.modid, 'name':project.mod_name, 'description':project.mod_description, 'version':project.mod_version, 'mcversion':project.minecraft.version, 'url':project.url, 'updateUrl':project.update_json, 'year':String.valueOf(Year.now().getValue())
     }
         
     // copy everything else, thats not the mcmod.info
