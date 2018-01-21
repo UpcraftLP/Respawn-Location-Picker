@@ -21,7 +21,7 @@ plugins {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
-import java.time.Year;
+import java.time.Year
 
 
 def username = "${modid}"

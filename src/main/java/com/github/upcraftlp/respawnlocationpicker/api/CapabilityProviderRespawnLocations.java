@@ -1,6 +1,5 @@
 package com.github.upcraftlp.respawnlocationpicker.api;
 
-import com.github.upcraftlp.respawnlocationpicker.api.IRespawnLocations;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,7 +17,7 @@ public class CapabilityProviderRespawnLocations implements ICapabilitySerializab
     @CapabilityInject(IRespawnLocations.class)
     public static final Capability<IRespawnLocations> CAPABILITY = null;
 
-    private IRespawnLocations INSTANCE = CAPABILITY.getDefaultInstance();
+    private final IRespawnLocations INSTANCE = CAPABILITY.getDefaultInstance();
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {

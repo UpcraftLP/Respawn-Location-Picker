@@ -30,6 +30,7 @@ public class Main {
     @Mod.Metadata(MODID)
     public static ModMetadata metaData;
     
+    @SuppressWarnings("WeakerAccess")
     @SidedProxy(clientSide = CLIENT_PROXY, serverSide = SERVER_PROXY)
     public static CommonProxy proxy;
 

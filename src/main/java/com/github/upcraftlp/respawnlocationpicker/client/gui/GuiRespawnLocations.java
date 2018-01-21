@@ -75,17 +75,12 @@ public class GuiRespawnLocations extends GuiScreen {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
-    }
-
-    @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
         NetworkHandler.INSTANCE.sendToServer(new PacketSetRespawnLocation(button.id));
     }
 
-    public static String getStringForTarget(TargetPoint4d target, boolean includeFormatting) {
+    private static String getStringForTarget(TargetPoint4d target, boolean includeFormatting) {
         return
                 //DIMENSION
                 (includeFormatting ? TextFormatting.DARK_AQUA : "") +

@@ -21,7 +21,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -31,18 +30,6 @@ import java.util.List;
 public class CapabilityHandler {
 
     public static final ResourceLocation CAPABILITY = new ResourceLocation(Reference.MODID, "respawns");
-    private static final Field SPAWN_CHUNK_MAP;
-
-    static {
-        Field spawnChunkMap;
-        try {
-            spawnChunkMap = EntityPlayer.class.getDeclaredField("spawnChunkMap");
-        } catch (NoSuchFieldException e) { //should never happen
-            e.printStackTrace();
-            spawnChunkMap = null;
-        }
-        SPAWN_CHUNK_MAP = spawnChunkMap;
-    }
 
     @SubscribeEvent
     public static void onAttachCapability(AttachCapabilitiesEvent<Entity> event) {

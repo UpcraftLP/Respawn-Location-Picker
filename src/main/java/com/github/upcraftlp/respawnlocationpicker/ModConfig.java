@@ -11,6 +11,7 @@ import static com.github.upcraftlp.respawnlocationpicker.Reference.MODID;
 /**
  * @author UpcraftLP
  */
+@SuppressWarnings("CanBeFinal")
 @Config(modid = MODID, name = "craftdevmods/" + MODID) //--> /config/craftdevmods/respawnlocationpicker.cfg
 public class ModConfig {
 

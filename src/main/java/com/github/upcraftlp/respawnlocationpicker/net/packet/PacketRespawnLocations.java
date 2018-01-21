@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketRespawnLocations, IMessage> {
 
+    @SuppressWarnings("WeakerAccess")
     public TargetPoint4d[] targets;
 
     public PacketRespawnLocations() {
