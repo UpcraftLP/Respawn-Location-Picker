@@ -57,7 +57,7 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
             target = new TargetPoint4d(server.getWorld(dimension).getSpawnPoint(), dimension, "World Spawn");
         }
         else {
-            target = locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
+            target = locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex - 1);
         }
         playerMP.setSpawnDimension(target.getDimension());
         playerMP.setSpawnChunk(target.getPosition(), true, target.getDimension());
