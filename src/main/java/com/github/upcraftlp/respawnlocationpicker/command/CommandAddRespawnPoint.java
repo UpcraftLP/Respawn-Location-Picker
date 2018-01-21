@@ -22,12 +22,12 @@ public class CommandAddRespawnPoint extends CommandBase {
 
     @Override
     public String getName() {
-        return "addRespawnPoint";
+        return "addSpawnPoint";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "commands.addRespawnPoint.usage"; //addRespawnPoint <name> [player]
+        return "commands.addSpawnPoint.usage"; //addSpawnPoint <name> [player]
     }
 
     @Override
@@ -46,6 +46,6 @@ public class CommandAddRespawnPoint extends CommandBase {
 
     @Override
     public int getRequiredPermissionLevel() {
-        return ModConfig.allowCustomSpawnpoints ? 0 : super.getRequiredPermissionLevel();
+        return 0;
     }
 }

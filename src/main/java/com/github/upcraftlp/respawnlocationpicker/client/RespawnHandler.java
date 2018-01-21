@@ -28,6 +28,7 @@ public class RespawnHandler {
         final GuiScreen guiScreen = event.getGui();
         if(guiScreen instanceof GuiGameOver) {
             event.setCanceled(true);
+            event.getButton().playPressSound(mc.getSoundHandler());
             switch (event.getButton().id) {
                 case 0:
                     NetworkHandler.INSTANCE.sendToServer(new PacketRespawnPlayer());

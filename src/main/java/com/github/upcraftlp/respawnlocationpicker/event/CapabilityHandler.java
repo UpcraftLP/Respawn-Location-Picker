@@ -61,7 +61,7 @@ public class CapabilityHandler {
             boolean result = locations.addRespawnLocation(new TargetPoint4d(pos, player.dimension, "Bed"));
             if(result && world.isDaytime()) {
                 event.setCanceled(true);
-                player.sendStatusMessage(new TextComponentTranslation(Reference.MODID + ".setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
+                player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
             }
         }
     }

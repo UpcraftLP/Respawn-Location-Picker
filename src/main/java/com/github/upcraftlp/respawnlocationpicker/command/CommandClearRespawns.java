@@ -16,12 +16,12 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class CommandClearRespawns extends CommandBase {
     @Override
     public String getName() {
-        return "clearRespawnPoints";
+        return "clearSpawnPoints";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "commands.clearRespawnPoints.usage";
+        return "commands.clearSpawnPoints.usage";
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommandClearRespawns extends CommandBase {
         if(target.hasCapability(CapabilityProviderRespawnLocations.CAPABILITY, null)) {
             IRespawnLocations respawnLocations = target.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
             int count = respawnLocations.clearRespawnLocations();
-            sender.sendMessage(new TextComponentTranslation("commands.clearRespawnPoints.success", count));
+            sender.sendMessage(new TextComponentTranslation("commands.clearSpawnPoints.success", count));
         }
     }
 

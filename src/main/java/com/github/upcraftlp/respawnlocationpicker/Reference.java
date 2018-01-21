@@ -1,7 +1,5 @@
 package com.github.upcraftlp.respawnlocationpicker;
 
-import net.minecraft.util.text.TextFormatting;
-
 import java.time.Year;
 
 public class Reference {
@@ -11,7 +9,7 @@ public class Reference {
     public static final String VERSION = "@VERSION@";
 
     //Misc
-    public static final String CREDITS = TextFormatting.GOLD + "\u00A9 " + "2018-" + Year.now().getValue() + " UpcraftLP";
+    public static final String CREDITS = "\u00A9 " + "2018-" + Year.now().getValue() + " UpcraftLP";
 
     //Meta Information
     public static final String MODNAME = "Respawn Location Picker";
