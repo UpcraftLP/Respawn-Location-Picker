@@ -1,15 +1,10 @@
 package com.github.upcraftlp.respawnlocationpicker;
 
-import java.time.Year;
-
 public class Reference {
 
     //Version
     public static final String MCVERSIONS = "[1.12, 1.13)";
     public static final String VERSION = "@VERSION@";
-
-    //Misc
-    public static final String CREDITS = "\u00A9 " + "2018-" + Year.now().getValue() + " UpcraftLP";
 
     //Meta Information
     public static final String MODNAME = "Respawn Location Picker";

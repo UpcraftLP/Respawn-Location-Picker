@@ -8,8 +8,8 @@
   "url": "${url}",
   "updateUrl": "${updateUrl}",
   "authorList": ["UpcraftLP"],
-  "credits": "(C)${year} UpcraftLP",
-  "logoFile": "",
+  "credits": "(C)2018-${year} UpcraftLP",
+  "logoFile": "assets/${modid}/textures/logo.png",
   "screenshots": [],
   "dependencies": []
 }
