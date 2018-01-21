@@ -1,6 +1,5 @@
 package com.github.upcraftlp.respawnlocationpicker.api;
 
-import com.github.upcraftlp.respawnlocationpicker.util.TargetPoint4d;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
@@ -12,8 +11,8 @@ public interface IRespawnLocations {
 
     List<TargetPoint4d> getRespawnLocations(int listLength);
 
-    default void addRespawnLocation(BlockPos pos, int dimension, String name) {
-        this.addRespawnLocation(new TargetPoint4d(pos, dimension, name));
+    default void addRespawnLocation(BlockPos pos, int dimension, String name, String biome) {
+        this.addRespawnLocation(new TargetPoint4d(pos, dimension, name, biome));
     }
 
     boolean addRespawnLocation(TargetPoint4d target);
