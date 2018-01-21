@@ -16,7 +16,7 @@ public class Reference {
     //Meta Information
     public static final String MODNAME = "Respawn Location Picker";
     public static final String MODID = "respawn-location-picker";
-    public static final String DEPENDENCIES = "required-after:forge@[14.23.1.2555,)";
+    public static final String DEPENDENCIES = "";
     public static final String UPDATE_JSON = "@UPDATE_JSON@";
 
     public static final String FINGERPRINT_KEY = "@FINGERPRINTKEY@";
