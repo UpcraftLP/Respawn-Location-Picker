@@ -3,28 +3,26 @@ package com.github.upcraftlp.respawnlocationpicker.net.packet;
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.api.client.TargetPoint4dClient;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
-import com.github.upcraftlp.respawnlocationpicker.client.gui.GuiRespawnLocations;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.List;
 
 /**
  * @author UpcraftLP
  */
-public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketRespawnLocations, IMessage> {
+public class PacketRespawnLocations implements IMessage {
 
-    private NonNullList<TargetPoint4d> targets = NonNullList.create();
-    private boolean
-            hasPos = false,
-            hasBiome = false;
+    public NonNullList<TargetPoint4d> targets = NonNullList.create();
 
+    public boolean
+            hasPos = false;
+    public boolean hasBiome = false;
+
+    @SuppressWarnings("unused")
     public PacketRespawnLocations() {
         //NO-OP
     }
@@ -64,11 +62,4 @@ public class PacketRespawnLocations implements IMessage, IMessageHandler<PacketR
         }
     }
 
-    @Override
-    public IMessage onMessage(PacketRespawnLocations message, MessageContext ctx) {
-        Minecraft mc = Minecraft.getMinecraft();
-        boolean showHoverText = message.hasBiome ||message.hasPos;
-        mc.addScheduledTask(() -> mc.displayGuiScreen(new GuiRespawnLocations(message.targets, showHoverText)));
-        return null;
-    }
 }

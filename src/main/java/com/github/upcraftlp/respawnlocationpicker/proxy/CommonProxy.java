@@ -5,7 +5,6 @@ import com.github.upcraftlp.respawnlocationpicker.capability.DefaultRespawnLocat
 import com.github.upcraftlp.respawnlocationpicker.command.CommandAddRespawnPoint;
 import com.github.upcraftlp.respawnlocationpicker.command.CommandClearRespawns;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
-import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnPlayer;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketSetRespawnLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -17,12 +16,11 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class CommonProxy {
 
-    private static int packetID = 0;
+    protected static int packetID = 0;
 
     public void preInit(FMLPreInitializationEvent event) {
         CapabilityManager.INSTANCE.register(IRespawnLocations.class, new DefaultRespawnLocations.Storage(), DefaultRespawnLocations::new);
         NetworkHandler.INSTANCE.registerMessage(PacketRespawnPlayer.class, PacketRespawnPlayer.class, packetID++, Side.SERVER);
-        NetworkHandler.INSTANCE.registerMessage(PacketRespawnLocations.class, PacketRespawnLocations.class, packetID++, Side.CLIENT);
         NetworkHandler.INSTANCE.registerMessage(PacketSetRespawnLocation.class, PacketSetRespawnLocation.class, packetID++, Side.SERVER);
     }
 

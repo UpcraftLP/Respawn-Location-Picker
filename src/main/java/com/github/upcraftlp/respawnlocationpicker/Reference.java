@@ -9,6 +9,7 @@ public class Reference {
     //Meta Information
     public static final String MODNAME = "Respawn Location Picker";
     public static final String MODID = "respawn-location-picker";
+    public static final String NETWORK_CHANNEL = "spawn_loc_picker";
     public static final String DEPENDENCIES = "";
     public static final String UPDATE_JSON = "@UPDATE_JSON@";
 
