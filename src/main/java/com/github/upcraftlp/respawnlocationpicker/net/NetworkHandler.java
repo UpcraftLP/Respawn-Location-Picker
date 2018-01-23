@@ -9,6 +9,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
  */
 public class NetworkHandler {
 
-    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
+    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.NETWORK_CHANNEL);
 
 }
