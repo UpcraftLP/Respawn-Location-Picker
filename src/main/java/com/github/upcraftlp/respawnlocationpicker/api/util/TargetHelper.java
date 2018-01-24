@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 public class TargetHelper {
 
     public static String getBiome(int dimension, BlockPos pos) {
-        return getBiome(FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dimension), pos);
+        return getBiome(FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dimension), pos);
     }
 
     public static String getBiome(World world, BlockPos pos) {

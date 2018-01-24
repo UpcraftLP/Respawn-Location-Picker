@@ -3,11 +3,12 @@ package com.github.upcraftlp.respawnlocationpicker.client.gui;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketSetRespawnLocation;
+import com.google.common.collect.Lists;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.NonNullList;
+import java.util.List;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -18,19 +19,19 @@ import java.io.IOException;
  */
 public class GuiRespawnLocations extends GuiScreen {
 
-    private final NonNullList<TargetPoint4d> targets;
+    private final List<TargetPoint4d> targets;
     private final boolean hasHoverText;
-    private NonNullList<String> labels = null;
+    private List<String> labels = null;
     private static final int
             BUTTON_HEIGHT = 20,
             MARGIN = 8;
     private int BUTTON_WIDTH = 100;
 
 
-    public GuiRespawnLocations(NonNullList<TargetPoint4d> targets, boolean showHoverText) {
+    public GuiRespawnLocations(List<TargetPoint4d> targets, boolean showHoverText) {
         this.targets = targets;
         this.hasHoverText = showHoverText;
-        if(showHoverText) labels = NonNullList.create();
+        if(showHoverText) labels = Lists.newArrayList();
     }
 
     @Override
@@ -40,7 +41,7 @@ public class GuiRespawnLocations extends GuiScreen {
 
         //make sure to adapt the size of the buttons to the label widths
         for(TargetPoint4d target : this.targets) {
-            int width = mc.fontRenderer.getStringWidth(target.getName()) + (MARGIN * 2);
+            int width = mc.fontRendererObj.getStringWidth(target.getName()) + (MARGIN * 2);
             if(width > BUTTON_WIDTH) BUTTON_WIDTH = width;
         }
         for(int i = 0; i < this.targets.size(); i++) {
@@ -58,12 +59,12 @@ public class GuiRespawnLocations extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
         GlStateManager.scale(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRenderer, I18n.format("gui.respawnLocation.title"), this.width / 2 / 2, 15, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.respawnLocation.title"), this.width / 2 / 2, 15, 16777215);
         GlStateManager.popMatrix();
         if(hasHoverText) {
             for (GuiButton button : this.buttonList) {
                 if(button.isMouseOver()) {
-                    drawHoveringText(labels.get(button.id), mouseX, mouseY);
+                    drawHoveringText(Lists.newArrayList(labels.get(button.id)), mouseX, mouseY);
                 }
             }
         }

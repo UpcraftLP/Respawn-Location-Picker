@@ -35,7 +35,7 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
 
     @Override
     public PacketRespawnLocations onMessage(PacketRespawnPlayer message, MessageContext ctx) {
-        EntityPlayerMP player = ctx.getServerHandler().player;
+        EntityPlayerMP player = ctx.getServerHandler().playerEntity;
         IRespawnLocations respawnLocations = player.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
         int listLength = ModConfig.respawnLocations;
         if(ModConfig.showWorldSpawn) listLength -= 1;
@@ -43,7 +43,7 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
         if(ModConfig.showWorldSpawn || respawnLocations.getLocationCount() == 0) {
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
             int dimension = player.world.provider.getRespawnDimension(player);
-            World respawnWorld = server.getWorld(dimension);
+            World respawnWorld = server.worldServerForDimension(dimension);
             BlockPos spawn = respawnWorld.getSpawnPoint();
             targets.add(new TargetPoint4d(spawn, dimension, "World Spawn", TargetHelper.getBiome(respawnWorld, spawn)));
         }

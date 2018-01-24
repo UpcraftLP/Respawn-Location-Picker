@@ -1,6 +1,5 @@
 package com.github.upcraftlp.respawnlocationpicker.client;
 
-import com.github.upcraftlp.respawnlocationpicker.Reference;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnPlayer;
 import net.minecraft.client.Minecraft;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author UpcraftLP
  */
 @SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(modid = Reference.MODID, value = {Side.CLIENT})
+@Mod.EventBusSubscriber({Side.CLIENT})
 public class RespawnHandler {
 
     private static final Minecraft mc = Minecraft.getMinecraft();

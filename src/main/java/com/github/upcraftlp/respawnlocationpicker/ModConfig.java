@@ -28,7 +28,7 @@ public class ModConfig {
     @Config.Comment("will players get the coordinates, biome, both or none if hovering over a waypoint?")
     public static SpawnPointDisplayMode displayMode = SpawnPointDisplayMode.BOTH;
 
-    @Mod.EventBusSubscriber(modid = MODID)
+    @Mod.EventBusSubscriber
     public static class Handler {
 
         @SubscribeEvent

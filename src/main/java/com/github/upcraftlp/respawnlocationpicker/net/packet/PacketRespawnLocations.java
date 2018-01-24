@@ -3,8 +3,8 @@ package com.github.upcraftlp.respawnlocationpicker.net.packet;
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.api.client.TargetPoint4dClient;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
+import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PacketRespawnLocations implements IMessage {
 
-    public NonNullList<TargetPoint4d> targets = NonNullList.create();
+    public List<TargetPoint4d> targets = Lists.newArrayList();
 
     public boolean
             hasPos = false;

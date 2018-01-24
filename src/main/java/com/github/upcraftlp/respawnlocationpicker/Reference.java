@@ -3,7 +3,7 @@ package com.github.upcraftlp.respawnlocationpicker;
 public class Reference {
 
     //Version
-    public static final String MCVERSIONS = "[1.11, 1.12)";
+    public static final String MCVERSIONS = "[1.10, 1.11)";
     public static final String VERSION = "@VERSION@";
 
     //Meta Information

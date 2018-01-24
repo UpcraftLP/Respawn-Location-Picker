@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author UpcraftLP
  */
-@Mod.EventBusSubscriber(modid = Reference.MODID)
+@Mod.EventBusSubscriber
 public class CapabilityHandler {
 
     public static final ResourceLocation CAPABILITY = new ResourceLocation(Reference.MODID, "respawns");
@@ -99,7 +99,7 @@ public class CapabilityHandler {
             boolean result = locations.addRespawnLocation(new TargetPoint4d(pos, world.provider.getDimension(), "Bed", TargetHelper.getBiome(world, pos)));
             if(result && world.isDaytime()) {
                 event.setCanceled(true);
-                player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
+                player.sendMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)));
             }
         }
     }

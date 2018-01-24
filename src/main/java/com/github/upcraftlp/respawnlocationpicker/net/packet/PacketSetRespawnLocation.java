@@ -46,7 +46,7 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
     public IMessage onMessage(PacketSetRespawnLocation message, MessageContext ctx) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         NetHandlerPlayServer netHandler = ctx.getServerHandler();
-        EntityPlayerMP playerMP = netHandler.player;
+        EntityPlayerMP playerMP = netHandler.playerEntity;
         IRespawnLocations locations = playerMP.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
 
         TargetPoint4d target = null;
@@ -55,9 +55,9 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
 
         if(ModConfig.showWorldSpawn || locations.getLocationCount() == 0) {
             if(message.targetIndex == 0) {
-                World world = server.getWorld(playerMP.getSpawnDimension());
+                World world = playerMP.world; //getspawndimension
                 if(!world.provider.canRespawnHere()) {
-                    world = server.getWorld(world.provider.getRespawnDimension(playerMP));
+                    world = server.worldServerForDimension(world.provider.getRespawnDimension(playerMP));
                 }
                 BlockPos spawn = world.getSpawnPoint();
                 target = new TargetPoint4d(spawn, world.provider.getDimension(), "World Spawn", TargetHelper.getBiome(world, spawn));
@@ -65,14 +65,13 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
             message.targetIndex -= 1;
         }
         destination = target != null ? target : locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
-        playerMP.setSpawnDimension(destination.getDimension());
         playerMP.setSpawnChunk(destination.getPosition(), true, destination.getDimension());
 
 
         server.addScheduledTask(() -> {
             netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
-            netHandler.player.closeScreen();
             netHandler.player.connection.setPlayerLocation(destination.getX() + 0.5D, destination.getY(), destination.getZ() + 0.5D, 0.0F, 0.0F);
+            netHandler.playerEntity.closeScreen();
         });
         return null;
     }
