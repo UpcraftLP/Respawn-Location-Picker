@@ -36,13 +36,13 @@ public class CommandAddRespawnPoint extends CommandBase {
         EntityPlayer player = getCommandSenderAsPlayer(sender);
         if(args.length < 1 || args.length > 2) throw new WrongUsageException(getUsage(sender));
         if(args.length == 2 && !sender.canUseCommand(server.getOpPermissionLevel(), this.getName())) {
-            sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.permissionOtherPlayers").setStyle(new Style().setColor(TextFormatting.RED)));
+            sender.sendMessage(new TextComponentTranslation("commands.addSpawnPoint.permissionOtherPlayers").setStyle(new Style().setColor(TextFormatting.RED)));
         }
         TargetPoint4d target = new TargetPoint4d(player.getPosition(), player.dimension, args[0], TargetHelper.getBiome(player.world, player.getPosition()));
         EntityPlayer targetPlayer = args.length == 2 ? getPlayer(server, sender, args[1]) : player;
         IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
-        if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addRespawnPoint.success", args[0]));
-        else throw new CommandException("commands.addRespawnPoint.fail", args[0]);
+        if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addSpawnPoint.success", args[0]));
+        else throw new CommandException("commands.addSpawnPoint.fail", args[0]);
     }
 
     @Override
