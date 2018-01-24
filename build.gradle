@@ -145,7 +145,7 @@ dependencies {
     //JEI (runtime only)
     runtime "mezz.jei:jei_${project.mc_version}:${project.jei_version}"
 
-    deobfProvided "com.github.blay09:Waystones:1.12-SNAPSHOT"
+    deobfProvided "com.github.blay09:Waystones:${project.ws_version}"
 
 }
 tasks.build.dependsOn signJar
