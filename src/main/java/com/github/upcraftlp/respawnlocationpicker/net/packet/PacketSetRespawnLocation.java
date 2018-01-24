@@ -72,7 +72,7 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         server.addScheduledTask(() -> {
             netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
             netHandler.player.closeScreen();
-            netHandler.player.connection.setPlayerLocation(destination.getX() + 0.5D, destination.getY(), destination.getZ() + 0.5D, 0.0F, 0.0F);
+            netHandler.setPlayerLocation(destination.getX() + 0.5D, destination.getY(), destination.getZ() + 0.5D, 0.0F, 0.0F);
         });
         return null;
     }
