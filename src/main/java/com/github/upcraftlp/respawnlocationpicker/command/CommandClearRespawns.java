@@ -8,7 +8,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author UpcraftLP
@@ -21,14 +26,13 @@ public class CommandClearRespawns extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "commands.clearSpawnPoints.usage";
+        return "commands.clearSpawnPoints.usage"; //clearSpawnPoints [player]
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if(args.length > 1) throw new WrongUsageException(this.getUsage(sender));
-        EntityPlayer player = getCommandSenderAsPlayer(sender);
-        EntityPlayer target = args.length == 0 ? player : getPlayer(server, player, args[0]);
+        EntityPlayer target = args.length == 0 ? getCommandSenderAsPlayer(sender) : getPlayer(server, sender, args[0]);
         if(target.hasCapability(CapabilityProviderRespawnLocations.CAPABILITY, null)) {
             IRespawnLocations respawnLocations = target.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
             int count = respawnLocations.clearRespawnLocations();
@@ -36,4 +40,13 @@ public class CommandClearRespawns extends CommandBase {
         }
     }
 
+    @Override
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) : Collections.emptyList();
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 2;
+    }
 }
