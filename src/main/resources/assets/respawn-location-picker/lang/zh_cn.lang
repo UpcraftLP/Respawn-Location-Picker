@@ -4,7 +4,7 @@
 gui.respawnLocation.title=选择你的重生点！
 
 #Commands
-commands.addSpawnPoint.usage=/addRespawnPoint <name> [player]
+commands.addSpawnPoint.usage=/addSpawnPoint <name> [player] [x y z] [dimension]
 commands.addSpawnPoint.permissionOtherPlayers=你没有给其他玩家添加重生点的权限！
 commands.addSpawnPoint.success=成功添加重生点 %s
 commands.addSpawnPoint.fail=无法添加重生点: %s 已经是重生点
