@@ -1,14 +1,15 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/respawn-location-picker",
   "promos": {
-    "1.12.2-latest": "1.2.2",
-    "1.12.2-recommended": "1.2.2",
-    "1.11.2-latest": "1.1.2",
-    "1.11.2-recommended": "1.1.2",
-    "1.10.2-latest": "1.0.1",
-    "1.10.2-recommended": "1.0.1"
+    "1.12.2-latest": "1.2.3",
+    "1.12.2-recommended": "1.2.3",
+    "1.11.2-latest": "1.1.3",
+    "1.11.2-recommended": "1.1.3",
+    "1.10.2-latest": "1.0.2",
+    "1.10.2-recommended": "1.0.2"
   },
   "1.12.2": {
+    "1.2.3": "* fixed a serverside crash",
     "1.2.2": "* commands now work with command blocks\n* fixed wrong command usage\n* added parameters to the /addSpawnPoint command",
     "1.2.1": "* command localization fix",
     "1.2.0": "* fixed server crash\n* added chinese translation",
@@ -16,12 +17,14 @@
     "1.0.0": "* initial release"
   },
   "1.11.2": {
+    "1.1.3": "* fixed a serverside crash",
     "1.1.2": "* commands now work with command blocks\n* fixed wrong command usage\n* added parameters to the /addSpawnPoint command",
     "1.1.1": "* command localization fix",
     "1.1.0": "* fixed server crash\n* added chinese translation",
     "1.0.0": "* initial release"
   },
   "1.10.2": {
+    "1.0.2": "* fixed a serverside crash",
     "1.0.1": "* commands now work with command blocks\n* fixed wrong command usage\n* added parameters to the /addSpawnPoint command",
     "1.0.0": "* downgraded from 1.11.2-1.1.0\n* command localization fix"
   }
