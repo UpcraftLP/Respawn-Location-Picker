@@ -14,6 +14,6 @@ public class TargetHelper {
     }
 
     public static String getBiome(World world, BlockPos pos) {
-        return world.getBiome(pos).getBiomeName();
+        return world.getBiome(pos).biomeName;
     }
 }
