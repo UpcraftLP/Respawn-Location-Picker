@@ -1,4 +1,9 @@
 ------------------------------------------------------
+Version 1.3.0
+------------------------------------------------------
+- fixed dimension teleportation issues (closes [#4](https://github.com/UpcraftLP/Respawn-Location-Picker/issues/4))
+
+------------------------------------------------------
 Version 1.2.3
 ------------------------------------------------------
 - fixed a serverside crash
