@@ -5,6 +5,7 @@ import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProvi
 import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.util.RespawnTeleporter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
@@ -12,6 +13,7 @@ import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -65,14 +67,13 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
             message.targetIndex -= 1;
         }
         destination = target != null ? target : locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
-        playerMP.setSpawnDimension(destination.getDimension());
-        playerMP.setSpawnChunk(destination.getPosition(), true, destination.getDimension());
-
+        int targetDim = destination.getDimension();
+        playerMP.setSpawnChunk(destination.getPosition(), true, targetDim);
 
         server.addScheduledTask(() -> {
             netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
             netHandler.player.closeScreen();
-            netHandler.setPlayerLocation(destination.getX() + 0.5D, destination.getY(), destination.getZ() + 0.5D, 0.0F, 0.0F);
+            server.getPlayerList().transferPlayerToDimension(netHandler.player, targetDim, new RespawnTeleporter((WorldServer) playerMP.world, destination.getPosition()));
         });
         return null;
     }
