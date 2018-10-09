@@ -7,7 +7,7 @@ gui.respawnLocation.title=Choose your respawn location!
 commands.addSpawnPoint.usage=/addSpawnPoint <name> [player] [x y z] [dimension]
 commands.addSpawnPoint.permissionOtherPlayers=You do not have the required permissions to add spawn points for other players!
 commands.addSpawnPoint.success=Successfully added spawn point %s
-commands.addSpawnPoint.fail=Failed to add repsawn point: %s is already a respawn point
+commands.addSpawnPoint.fail=Failed to add respawn point: %s is already a respawn point
 
 commands.clearSpawnPoints.usage=/clearSpawnPoints [player]
 commands.clearSpawnPoints.success=Successfully cleared %s spawn points
