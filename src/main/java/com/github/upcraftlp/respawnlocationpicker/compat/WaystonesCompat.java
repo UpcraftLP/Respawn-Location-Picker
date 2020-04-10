@@ -12,11 +12,12 @@ public class WaystonesCompat {
 
     public static String getWaystoneName(World world, BlockPos pos) {
         for(EnumFacing facing : EnumFacing.Plane.HORIZONTAL.facings()) {
-            IBlockState blockState = world.getBlockState(pos.offset(facing));
+            BlockPos toTest = pos.offset(facing);
+            IBlockState blockState = world.getBlockState(toTest);
             if(blockState.getBlock() instanceof BlockWaystone) {
                 EnumFacing direction = blockState.getValue(BlockWaystone.FACING);
                 if(direction.getOpposite() == facing) {
-                    TileEntity tileEntity = world.getTileEntity(pos);
+                    TileEntity tileEntity = world.getTileEntity(toTest);
                     if(tileEntity instanceof TileWaystone) {
                         return ((TileWaystone) tileEntity).getWaystoneName();
                     }

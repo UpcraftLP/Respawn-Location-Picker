@@ -95,7 +95,7 @@ public class CapabilityHandler {
             TileEntity tileentity = world.getTileEntity(pos);
             EnumDyeColor enumdyecolor = tileentity instanceof TileEntityBed ? ((TileEntityBed) tileentity).getColor() : EnumDyeColor.RED;
             IRespawnLocations locations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
-            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos, world.provider.getDimension(), enumdyecolor.getName() + " Bed", TargetHelper.getBiome(world, pos)));
+            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), enumdyecolor.getName() + " Bed", TargetHelper.getBiome(world, pos)));
             if(result && world.isDaytime()) {
                 event.setCanceled(true);
                 player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
