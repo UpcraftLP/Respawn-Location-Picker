@@ -3,7 +3,7 @@ buildscript {
         jcenter()
         maven {
             name = "Forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "Sonatype"
@@ -11,24 +11,24 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
     }
 }
 
 plugins {
-    id 'com.matthewprenger.cursegradle' version '1.0.9'
+    id "com.wynprice.cursemaven" version "2.1.1"
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: "net.minecraftforge.gradle.forge"
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 import java.time.Year
 
 
 def username = "${modid}"
-if (project.hasProperty('dev_mail')) {
+if (project.hasProperty("dev_mail")) {
     username = "${dev_mail}"
 }
-else if(project.hasProperty('dev_username')) {
+else if(project.hasProperty("dev_username")) {
     username = "${dev_username}"
 }
 
@@ -46,20 +46,13 @@ repositories {
     maven {
         //JEI files
         //Mantle
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "https://dvs1.progwml6.com/files/maven"
     }
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
-        url = "http://modmaven.k-4u.nl"
+        url = "https://modmaven.k-4u.nl"
     }
-
-    maven {
-        //fallback for almost everything, this is CurseForge :P
-        name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
-    }
-
     maven {
         name = "JitPack"
         url = "https://jitpack.io"
@@ -71,19 +64,19 @@ minecraft {
     if(project.hasProperty('runDir')) {
         runDir = project.runDir
     }
-    else if(file('../run').exists()) {
+    else if(file("../run").exists()) {
 		runDir = "../run"
 	}
 	else
 	{
 		runDir = "run"
 	}
-    
+
     mappings = project.forge_mappings
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-	
+
 	replace "@VERSION@", project.mod_version
-    def fingerPrintKey = project.hasProperty('public_key') ? findProperty('public_key').replace(":", "").toLowerCase(Locale.ROOT) : "undefined"
+    def fingerPrintKey = project.hasProperty("public_key") ? findProperty("public_key").replace(":", "").toLowerCase(Locale.ROOT) : "undefined"
     replace "@FINGERPRINTKEY@", fingerPrintKey
     replace "@UPDATE_JSON@", project.update_json
     replaceIn project.reference_class
@@ -99,7 +92,7 @@ minecraft {
 }
 
 sourceSets {
-	
+
 	main {
 		java {
 			srcDir 'src/main/java'
@@ -119,19 +112,6 @@ jar {
     )
 }
 
-task signJar(type: SignJar, dependsOn: reobfJar) {
-    onlyIf {
-        project.hasProperty('sign_keyStore')
-    }
-    keyPass = findProperty('sign_keyPass')
-    keyStore = findProperty('sign_keyStore')
-    storePass = findProperty('sign_storePass')
-    alias = findProperty('sign_alias')
-
-    inputFile = jar.archivePath
-    outputFile = jar.archivePath
-}
-
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
         tasks.withType(Javadoc) {
@@ -143,47 +123,10 @@ if (JavaVersion.current().isJava8Compatible()) {
 dependencies {
 
     //JEI (runtime only)
-    runtime "mezz.jei:jei_${project.mc_version}:${project.jei_version}"
+    deobfCompile "mezz.jei:jei_${project.mc_version}:${project.jei_version}"
 
-    provided "waystones:Waystones_${project.mc_version}:${project.ws_version}"
+    deobfProvided "curse.maven:waystones:${project.ws_version}"
 
-}
-tasks.build.dependsOn signJar
-tasks.curseforge.dependsOn build
-
-def curseRelations = {
-    //optionalLibrary '' //add curseforge-slug here
-}
-
-
-curseforge {
-    if (project.hasProperty('curse_key'))
-        apiKey = project.curse_key
-
-    if(project.hasProperty('curse_id')) {
-        project {
-            id = project.curse_id
-            changelogType = 'markdown'
-            changelog = getChangelogText()
-            releaseType = project.release_type
-
-            //TODO uncomment when adding curse relations
-            //relations curseRelations
-
-            //no such jars for now
-            //addArtifact javadocJar
-            //addArtifact sourceJar
-            //addArtifact apiJar
-
-            addGameVersion '1.12'
-            addGameVersion '1.12.1'
-            addGameVersion '1.12.2'
-
-            mainArtifact(jar) {
-                displayName = "${project.mod_name} v${project.mod_version} MC${project.mc_version}"
-            }
-        }
-    }
 }
 
 processResources
@@ -195,46 +138,16 @@ processResources
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
+
         // replace version and mcversion
         expand 'modid':project.modid, 'name':project.mod_name, 'description':project.mod_description, 'version':project.mod_version, 'mcversion':project.minecraft.version, 'url':project.url, 'updateUrl':project.update_json, 'year':String.valueOf(Year.now().getValue())
     }
-        
+
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
-	
+
 	//ATs
 	rename '(.+_at.cfg)', 'META-INF/$1'
-}
-
-String getChangelogText() {
-    def changelogFile = new File(project.projectDir, "changelog.md")
-    String str = ''
-    if(!changelogFile.exists()) {
-        changelogFile.createNewFile()
-        return str
-    }
-    String separator = '---'
-    int lineCount = 0
-    boolean done = false
-    changelogFile.eachLine {
-        if (done || it == null) {
-            return
-        }
-        if (lineCount < 3) {
-            lineCount++
-            if (it.startsWith(separator)) {
-                return
-            }
-        }
-        if (!it.startsWith(separator)) {
-            str += "$it" + (lineCount < 3 ? ':\n\n' : '\n')
-            return
-        }
-        done = true // once we go past the first version block, parse no more
-    }
-    str += "\n\n see full changelog [here](${project.changelog_url} \"Changelog\")"
-    return str
 }

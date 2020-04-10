@@ -13,8 +13,6 @@ public class Reference {
     public static final String DEPENDENCIES = "";
     public static final String UPDATE_JSON = "@UPDATE_JSON@";
 
-    public static final String FINGERPRINT_KEY = "@FINGERPRINTKEY@";
-    
     //Proxies
     public static final String CLIENT_PROXY = "com.github.upcraftlp.respawnlocationpicker.proxy.ClientProxy";
     public static final String SERVER_PROXY = "com.github.upcraftlp.respawnlocationpicker.proxy.ServerProxy";

@@ -1,10 +1,10 @@
 package com.github.upcraftlp.respawnlocationpicker.net.packet;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.util.RespawnTeleporter;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -13,7 +13,6 @@ import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -49,7 +48,7 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         NetHandlerPlayServer netHandler = ctx.getServerHandler();
         EntityPlayerMP playerMP = netHandler.player;
-        IRespawnLocations locations = playerMP.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
+        IRespawnLocations locations = playerMP.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
 
         TargetPoint4d target = null;
         TargetPoint4d destination; //needed for lambda expression
@@ -71,9 +70,9 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         playerMP.setSpawnChunk(destination.getPosition(), true, targetDim);
 
         server.addScheduledTask(() -> {
-            netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
             netHandler.player.closeScreen();
-            server.getPlayerList().transferPlayerToDimension(netHandler.player, targetDim, new RespawnTeleporter((WorldServer) playerMP.world, destination.getPosition()));
+            netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
+            netHandler.player.changeDimension(targetDim, new RespawnTeleporter(server.getWorld(targetDim), destination.getPosition()));
         });
         return null;
     }

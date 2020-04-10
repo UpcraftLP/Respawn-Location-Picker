@@ -51,7 +51,7 @@ public class RespawnTeleporter extends Teleporter {
                 for (int y = minY; y < maxY; ++y) {
                     IBlockState block = entity.world.getBlockState(new BlockPos(x, y, z));
                     final Material mat = block.getMaterial();
-                    if (mat.isSolid() || mat.getMobilityFlag() == EnumPushReaction.BLOCK)
+                    if (mat.isSolid() || mat.getPushReaction() == EnumPushReaction.BLOCK)
                         return false;
                 }
             }

@@ -1,5 +1,6 @@
-package com.github.upcraftlp.respawnlocationpicker.api.util;
+package com.github.upcraftlp.respawnlocationpicker.capability;
 
+import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;

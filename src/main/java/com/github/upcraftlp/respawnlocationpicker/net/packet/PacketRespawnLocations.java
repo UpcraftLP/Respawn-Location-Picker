@@ -4,9 +4,9 @@ import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.api.client.TargetPoint4dClient;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.List;
@@ -18,8 +18,7 @@ public class PacketRespawnLocations implements IMessage {
 
     public NonNullList<TargetPoint4d> targets = NonNullList.create();
 
-    public boolean
-            hasPos = false;
+    public boolean hasPos = false;
     public boolean hasBiome = false;
 
     @SuppressWarnings("unused")
@@ -33,32 +32,41 @@ public class PacketRespawnLocations implements IMessage {
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        int length = buf.readInt();
+        PacketBuffer buffer = new PacketBuffer(buf);
         this.hasPos = buf.readBoolean();
         this.hasBiome = buf.readBoolean();
+        int length = buffer.readVarInt();
         for(int i = 0; i < length; i++) {
             TargetPoint4dClient targetPoint = new TargetPoint4dClient();
-            if(this.hasPos) targetPoint.setPosition(BlockPos.fromLong(buf.readLong()), buf.readInt());
-            targetPoint.setName(ByteBufUtils.readUTF8String(buf));
-            if(this.hasBiome) targetPoint.setBiome(ByteBufUtils.readUTF8String(buf));
+            if(this.hasPos) {
+                BlockPos pos = buffer.readBlockPos();
+                int dim = buffer.readInt();
+                targetPoint.setPosition(pos, dim);
+            }
+            targetPoint.setName(buffer.readString(65535));
+            if(this.hasBiome) {
+                targetPoint.setBiome(buffer.readString(65535));
+            }
             this.targets.add(targetPoint);
         }
+        buffer.clear();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
+        PacketBuffer buffer = new PacketBuffer(buf);
         this.hasPos = ModConfig.displayMode.posIncluded();
         this.hasBiome = ModConfig.displayMode.biomeIncluded();
-        buf.writeInt(this.targets.size());
-        buf.writeBoolean(this.hasPos);
-        buf.writeBoolean(this.hasBiome);
+        buffer.writeBoolean(this.hasPos);
+        buffer.writeBoolean(this.hasBiome);
+        buffer.writeVarInt(this.targets.size());
         for(TargetPoint4d target : this.targets) {
             if(this.hasPos) {
-                buf.writeLong(target.getPosition().toLong());
-                buf.writeInt(target.getDimension());
+                buffer.writeBlockPos(target.getPosition());
+                buffer.writeInt(target.getDimension());
             }
-            ByteBufUtils.writeUTF8String(buf, target.getName());
-            if(this.hasBiome) ByteBufUtils.writeUTF8String(buf, target.getBiome());
+            buffer.writeString(target.getName());
+            if(this.hasBiome) buffer.writeString(target.getBiome());
         }
     }
 

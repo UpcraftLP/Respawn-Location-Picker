@@ -9,11 +9,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
-public class ClientProxy extends CommonProxy {
+public class ClientProxy implements Proxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
-        super.preInit(event);
-        NetworkHandler.INSTANCE.registerMessage(new PacketHandlerRespawnLocations(), PacketRespawnLocations.class, packetID++, Side.CLIENT);
+        NetworkHandler.INSTANCE.registerMessage(new PacketHandlerRespawnLocations(), PacketRespawnLocations.class, 2, Side.CLIENT);
     }
 }

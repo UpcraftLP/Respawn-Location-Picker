@@ -1,7 +1,7 @@
 package com.github.upcraftlp.respawnlocationpicker.command;
 
-import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -33,8 +33,8 @@ public class CommandClearRespawns extends CommandBase {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if(args.length > 1) throw new WrongUsageException(this.getUsage(sender));
         EntityPlayer target = args.length == 0 ? getCommandSenderAsPlayer(sender) : getPlayer(server, sender, args[0]);
-        if(target.hasCapability(CapabilityProviderRespawnLocations.CAPABILITY, null)) {
-            IRespawnLocations respawnLocations = target.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
+        if(target.hasCapability(CapabilityRespawnLocations.CAPABILITY, null)) {
+            IRespawnLocations respawnLocations = target.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
             int count = respawnLocations.clearRespawnLocations();
             sender.sendMessage(new TextComponentTranslation("commands.clearSpawnPoints.success", count));
         }

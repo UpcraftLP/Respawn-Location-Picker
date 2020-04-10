@@ -1,8 +1,8 @@
 package com.github.upcraftlp.respawnlocationpicker.net.packet;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.google.common.collect.Lists;
@@ -36,7 +36,7 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
     @Override
     public PacketRespawnLocations onMessage(PacketRespawnPlayer message, MessageContext ctx) {
         EntityPlayerMP player = ctx.getServerHandler().player;
-        IRespawnLocations respawnLocations = player.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
+        IRespawnLocations respawnLocations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
         int listLength = ModConfig.respawnLocations;
         if(ModConfig.showWorldSpawn) listLength -= 1;
         List<TargetPoint4d> targets = Lists.newArrayList();

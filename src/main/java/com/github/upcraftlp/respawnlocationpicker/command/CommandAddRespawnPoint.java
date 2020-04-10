@@ -1,8 +1,8 @@
 package com.github.upcraftlp.respawnlocationpicker.command;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.api.capability.CapabilityProviderRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.api.util.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.google.common.collect.Lists;
@@ -58,7 +58,7 @@ public class CommandAddRespawnPoint extends CommandBase {
             }
             TargetPoint4d target = new TargetPoint4d(pos, dim, args[0], TargetHelper.getBiome(dim, pos));
 
-            IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityProviderRespawnLocations.CAPABILITY, null);
+            IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
             if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addSpawnPoint.success", args[0]));
             else throw new CommandException("commands.addSpawnPoint.fail", args[0]);
         }
