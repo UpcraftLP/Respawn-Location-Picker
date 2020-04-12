@@ -76,10 +76,7 @@ minecraft {
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
 	replace "@VERSION@", project.mod_version
-    def fingerPrintKey = project.hasProperty("public_key") ? findProperty("public_key").replace(":", "").toLowerCase(Locale.ROOT) : "undefined"
-    replace "@FINGERPRINTKEY@", fingerPrintKey
     replace "@UPDATE_JSON@", project.update_json
-    replaceIn project.reference_class
 
     //auto-configure the run arguments
     clientRunArgs += "--username=${username}"

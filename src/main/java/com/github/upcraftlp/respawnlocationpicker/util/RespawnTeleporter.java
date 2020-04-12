@@ -8,19 +8,20 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.ITeleporter;
 
-public class RespawnTeleporter extends Teleporter {
+public class RespawnTeleporter implements ITeleporter {
 
     private final BlockPos targetPos;
 
-    public RespawnTeleporter(WorldServer server, BlockPos targetPos) {
-        super(server);
+    public RespawnTeleporter(BlockPos targetPos) {
         this.targetPos = targetPos;
     }
 
     @Override
-    public void placeInPortal(Entity entityIn, float rotationYaw) {
+    public void placeEntity(World w, Entity entityIn, float rotationYaw) {
         entityIn.posX = this.targetPos.getX() + 0.5D;
         entityIn.posY = this.targetPos.getY();
         entityIn.posZ = this.targetPos.getZ() + 0.5D;

@@ -2,6 +2,12 @@
 
 #Gui
 gui.respawnLocation.title=Choose your respawn location!
+gui.respawnLocation.players=Respawn next to whom?
+gui.respawnLocation.world=World Spawn
+gui.respawnLocation.grave=Last Death
+gui.respawnLocation.point=Spawnpoint
+gui.respawnLocation.players_button=Players
+
 
 #Commands
 commands.addSpawnPoint.usage=/addSpawnPoint <name> [player] [x y z] [dimension]

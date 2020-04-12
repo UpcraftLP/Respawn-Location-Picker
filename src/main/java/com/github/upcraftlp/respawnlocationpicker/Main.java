@@ -4,6 +4,7 @@ import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLo
 import com.github.upcraftlp.respawnlocationpicker.command.CommandAddRespawnPoint;
 import com.github.upcraftlp.respawnlocationpicker.command.CommandClearRespawns;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
+import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnNextTo;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketRespawnPlayer;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketSetRespawnLocation;
 import com.github.upcraftlp.respawnlocationpicker.proxy.Proxy;
@@ -21,7 +22,6 @@ import static com.github.upcraftlp.respawnlocationpicker.Reference.MCVERSIONS;
 import static com.github.upcraftlp.respawnlocationpicker.Reference.MODID;
 import static com.github.upcraftlp.respawnlocationpicker.Reference.MODNAME;
 import static com.github.upcraftlp.respawnlocationpicker.Reference.SERVER_PROXY;
-import static com.github.upcraftlp.respawnlocationpicker.Reference.UPDATE_JSON;
 import static com.github.upcraftlp.respawnlocationpicker.Reference.VERSION;
 
 @Mod(
@@ -29,8 +29,7 @@ import static com.github.upcraftlp.respawnlocationpicker.Reference.VERSION;
         version = VERSION,
         acceptedMinecraftVersions = MCVERSIONS,
         modid = MODID,
-        dependencies = DEPENDENCIES,
-        updateJSON = UPDATE_JSON
+        dependencies = DEPENDENCIES
 )
 public class Main {
 
@@ -48,6 +47,7 @@ public class Main {
         CapabilityRespawnLocations.register();
         NetworkHandler.INSTANCE.registerMessage(PacketRespawnPlayer.class, PacketRespawnPlayer.class, 0, Side.SERVER);
         NetworkHandler.INSTANCE.registerMessage(PacketSetRespawnLocation.class, PacketSetRespawnLocation.class, 1, Side.SERVER);
+        NetworkHandler.INSTANCE.registerMessage(PacketRespawnNextTo.class, PacketRespawnNextTo.class, 3, Side.SERVER);
         proxy.preInit(event);
         log.info("Pre-Initialization finished.");
     }

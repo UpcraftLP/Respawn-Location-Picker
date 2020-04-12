@@ -22,6 +22,16 @@ public class ModConfig {
     @Config.Comment("whether or not to include the global world spawn in the list of available respawn points")
     public static boolean showWorldSpawn = true;
 
+    @Config.Comment("Wether or not players have the option to respawn around their grave.")
+    public static boolean gravesEnabled = false;
+
+    @Config.Comment("The radius in which the players respawn when picking the \"Last Death\" option.")
+    @Config.RangeInt(min = 100, max = 500)
+    public static int graveRange = 100;
+
+    @Config.Comment("Wether or not players have the option to respawn next to other players.")
+    public static boolean allowPlayerRespawn = false;
+
     @Config.Comment("should players be allowed to add spawnpoints using /addspawnpoint")
     public static boolean allowCustomSpawnpoints = true;
 

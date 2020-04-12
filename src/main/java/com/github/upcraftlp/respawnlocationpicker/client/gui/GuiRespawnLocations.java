@@ -1,5 +1,6 @@
 package com.github.upcraftlp.respawnlocationpicker.client.gui;
 
+import com.github.upcraftlp.respawnlocationpicker.ModConfig;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.github.upcraftlp.respawnlocationpicker.net.NetworkHandler;
 import com.github.upcraftlp.respawnlocationpicker.net.packet.PacketSetRespawnLocation;
@@ -8,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
@@ -20,12 +22,12 @@ public class GuiRespawnLocations extends GuiScreen {
 
     private final NonNullList<TargetPoint4d> targets;
     private final boolean hasHoverText;
+    private boolean shouldDisplayPlayer;
     private NonNullList<String> labels = null;
     private static final int
             BUTTON_HEIGHT = 20,
             MARGIN = 8;
     private int BUTTON_WIDTH = 100;
-
 
     public GuiRespawnLocations(NonNullList<TargetPoint4d> targets, boolean showHoverText) {
         this.targets = targets;
@@ -40,7 +42,7 @@ public class GuiRespawnLocations extends GuiScreen {
 
         //make sure to adapt the size of the buttons to the label widths
         for(TargetPoint4d target : this.targets) {
-            int width = mc.fontRenderer.getStringWidth(target.getName()) + (MARGIN * 2);
+            int width = mc.fontRenderer.getStringWidth(target.getName().getFormattedText()) + (MARGIN * 2);
             if(width > BUTTON_WIDTH) BUTTON_WIDTH = width;
         }
         for(int i = 0; i < this.targets.size(); i++) {
@@ -48,8 +50,12 @@ public class GuiRespawnLocations extends GuiScreen {
                 labels.add(getStringForTarget(targets.get(i), true));
             }
             int xPos = x - (BUTTON_WIDTH + 5) + ((i % 2) * (BUTTON_WIDTH + 10));
-            this.buttonList.add(new GuiButtonExt(i, xPos, y + (i / 2) * (BUTTON_HEIGHT + 5), BUTTON_WIDTH, BUTTON_HEIGHT, targets.get(i).getName()));
+            this.buttonList.add(new GuiButtonExt(i, xPos, y + (i / 2) * (BUTTON_HEIGHT + 5), BUTTON_WIDTH, BUTTON_HEIGHT, targets.get(i).getName().getFormattedText()));
         }
+
+        this.shouldDisplayPlayer = ModConfig.allowPlayerRespawn && this.mc.player.connection.getPlayerInfoMap().size() > 1;
+        if(this.shouldDisplayPlayer)
+            this.buttonList.add(new GuiButtonExt(this.buttonList.size(), this.width / 4 * 3, this.height - 40, BUTTON_WIDTH, BUTTON_HEIGHT, new TextComponentTranslation("gui.respawnLocation.players_button").getFormattedText()));
     }
 
     @Override
@@ -63,7 +69,10 @@ public class GuiRespawnLocations extends GuiScreen {
         if(hasHoverText) {
             for (GuiButton button : this.buttonList) {
                 if(button.isMouseOver()) {
-                    drawHoveringText(labels.get(button.id), mouseX, mouseY);
+                    if(shouldDisplayPlayer && button.id == this.buttonList.size()-1)
+                        return;
+                    else
+                        drawHoveringText(labels.get(button.id), mouseX, mouseY);
                 }
             }
         }
@@ -72,6 +81,10 @@ public class GuiRespawnLocations extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
+        if(button.id == this.buttonList.size()-1 && shouldDisplayPlayer) {
+            this.mc.displayGuiScreen(new GuiRespawnPlayers(this));
+            return;
+        }
         NetworkHandler.INSTANCE.sendToServer(new PacketSetRespawnLocation(button.id));
     }
 
@@ -100,7 +113,8 @@ public class GuiRespawnLocations extends GuiScreen {
                     .append(" ")
                     .append(includeFormatting ? TextFormatting.BLUE : "")
                     .append("(")
-                    .append(target.getBiome())
+                    .append(target.getBiome().getFormattedText())
+                    .append(includeFormatting ? TextFormatting.BLUE : "")
                     .append(")")
                     .append(includeFormatting ? TextFormatting.RESET : "");
         }

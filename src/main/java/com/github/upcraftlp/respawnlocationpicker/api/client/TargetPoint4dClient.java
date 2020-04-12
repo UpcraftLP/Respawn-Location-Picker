@@ -2,6 +2,7 @@ package com.github.upcraftlp.respawnlocationpicker.api.client;
 
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -14,7 +15,7 @@ public class TargetPoint4dClient extends TargetPoint4d {
     private boolean hasPosition = false;
 
     public TargetPoint4dClient() {
-        super(BlockPos.ORIGIN, 0, "", "");
+        super(BlockPos.ORIGIN, 0, new TextComponentString(""), new TextComponentString(""));
     }
 
     public void setPosition(BlockPos pos, int dimension) {
@@ -32,7 +33,7 @@ public class TargetPoint4dClient extends TargetPoint4d {
 
     @Override
     public boolean hasBiome() {
-        return !this.biome.isEmpty();
+        return !this.biome.getFormattedText().isEmpty();
     }
 
 }

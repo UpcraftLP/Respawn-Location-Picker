@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -56,7 +57,7 @@ public class CommandAddRespawnPoint extends CommandBase {
             else {
                 targetPlayer = getCommandSenderAsPlayer(sender);
             }
-            TargetPoint4d target = new TargetPoint4d(pos, dim, args[0], TargetHelper.getBiome(dim, pos));
+            TargetPoint4d target = new TargetPoint4d(pos, dim, new TextComponentString(args[0]), new TextComponentString(TargetHelper.getBiome(dim, pos)));
 
             IRespawnLocations respawnLocations = targetPlayer.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
             if(respawnLocations.addRespawnLocation(target)) sender.sendMessage(new TextComponentTranslation("commands.addSpawnPoint.success", args[0]));

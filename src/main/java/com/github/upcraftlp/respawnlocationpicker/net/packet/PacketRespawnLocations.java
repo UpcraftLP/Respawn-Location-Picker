@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import java.util.List;
@@ -43,9 +44,9 @@ public class PacketRespawnLocations implements IMessage {
                 int dim = buffer.readInt();
                 targetPoint.setPosition(pos, dim);
             }
-            targetPoint.setName(buffer.readString(65535));
+            targetPoint.setName(ITextComponent.Serializer.fromJsonLenient(buffer.readString(65535)));
             if(this.hasBiome) {
-                targetPoint.setBiome(buffer.readString(65535));
+                targetPoint.setBiome(ITextComponent.Serializer.fromJsonLenient(buffer.readString(65535)));
             }
             this.targets.add(targetPoint);
         }
@@ -65,8 +66,8 @@ public class PacketRespawnLocations implements IMessage {
                 buffer.writeBlockPos(target.getPosition());
                 buffer.writeInt(target.getDimension());
             }
-            buffer.writeString(target.getName());
-            if(this.hasBiome) buffer.writeString(target.getBiome());
+            buffer.writeString(ITextComponent.Serializer.componentToJson(target.getName()));
+            if(this.hasBiome) buffer.writeString(ITextComponent.Serializer.componentToJson(target.getBiome()));
         }
     }
 

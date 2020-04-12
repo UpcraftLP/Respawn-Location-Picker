@@ -5,13 +5,18 @@ import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.util.RadiusHelper;
 import com.github.upcraftlp.respawnlocationpicker.util.RespawnTeleporter;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.play.client.CPacketClientStatus;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -61,10 +66,22 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
                     world = server.getWorld(world.provider.getRespawnDimension(playerMP));
                 }
                 BlockPos spawn = world.getSpawnPoint();
-                target = new TargetPoint4d(spawn, world.provider.getDimension(), "World Spawn", TargetHelper.getBiome(world, spawn));
+                target = new TargetPoint4d(spawn, world.provider.getDimension(), new TextComponentTranslation("gui.respawnLocation.world"), new TextComponentString(TargetHelper.getBiome(world, spawn)));
             }
             message.targetIndex -= 1;
         }
+
+        if(ModConfig.gravesEnabled) {
+            int compareIndex = ModConfig.showWorldSpawn || locations.getLocationCount() == 0 ? 1 : 0;
+            if(message.targetIndex == compareIndex) {
+                int dim = playerMP.dimension;
+                World w = server.getWorld(dim);
+                BlockPos pos = RadiusHelper.getRandomRadiusPoint(playerMP.getPosition(), ModConfig.graveRange, 20, w, playerMP);
+                target = new TargetPoint4d(pos, dim, new TextComponentTranslation("gui.respawnLocation.grave"), new TextComponentString(TargetHelper.getBiome(w, pos)));
+            }
+            message.targetIndex -= 1;
+        }
+
         destination = target != null ? target : locations.getRespawnLocations(ModConfig.respawnLocations).get(message.targetIndex);
         int targetDim = destination.getDimension();
         playerMP.setSpawnChunk(destination.getPosition(), true, targetDim);
@@ -72,7 +89,8 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         server.addScheduledTask(() -> {
             netHandler.player.closeScreen();
             netHandler.processClientStatus(new CPacketClientStatus(CPacketClientStatus.State.PERFORM_RESPAWN));
-            netHandler.player.changeDimension(targetDim, new RespawnTeleporter(server.getWorld(targetDim), destination.getPosition()));
+            if(targetDim != netHandler.player.dimension)
+                netHandler.player.changeDimension(targetDim, new RespawnTeleporter(destination.getPosition()));
         });
         return null;
     }

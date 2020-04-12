@@ -19,9 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -69,15 +67,15 @@ public class CapabilityHandler {
             for (TargetPoint4d targets : locations.getRespawnLocations(locations.getLocationCount())) {
                 if(targets.getDimension() == player.dimension && targets.getPosition().equals(pos)) return;
             }
-            String name = "Spawnpoint";
+            ITextComponent name = new TextComponentTranslation("gui.respawnLocation.point");
             if(CompatHelper.isModLoaded(CompatHelper.WAYSTONES)) {
                 String waystone = WaystonesCompat.getWaystoneName(world, pos);
                 if(waystone != null) {
-                    name = waystone;
+                    name = new TextComponentString(waystone);
                 }
             }
 
-            locations.addRespawnLocation(new TargetPoint4d(pos, player.dimension, name, TargetHelper.getBiome(player.world, pos)));
+            locations.addRespawnLocation(new TargetPoint4d(pos, player.dimension, name, new TextComponentString(TargetHelper.getBiome(player.world, pos))));
         }
     }
 
@@ -92,10 +90,9 @@ public class CapabilityHandler {
             if(state.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD) {
                 pos = pos.offset(state.getValue(BlockBed.FACING));
             }
-            TileEntity tileentity = world.getTileEntity(pos);
-            EnumDyeColor enumdyecolor = tileentity instanceof TileEntityBed ? ((TileEntityBed) tileentity).getColor() : EnumDyeColor.RED;
+            TileEntityBed bed = (TileEntityBed)world.getTileEntity(pos);
             IRespawnLocations locations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
-            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), enumdyecolor.getName() + " Bed", TargetHelper.getBiome(world, pos)));
+            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), new TextComponentTranslation(bed.getItemStack().getTranslationKey() + ".name"), new TextComponentString(TargetHelper.getBiome(world, pos))));
             if(result && world.isDaytime()) {
                 event.setCanceled(true);
                 player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);

@@ -1,7 +1,9 @@
 package com.github.upcraftlp.respawnlocationpicker.api.util;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.*;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.commons.lang3.Validate;
 
@@ -15,9 +17,9 @@ import java.util.Objects;
 public class TargetPoint4d implements INBTSerializable<NBTTagCompound> {
 
     protected int x, y, z, dimension;
-    protected String name, biome;
+    protected ITextComponent name, biome;
 
-    public TargetPoint4d(int x, int y, int z, int dimension, String name, String biome) {
+    public TargetPoint4d(int x, int y, int z, int dimension, ITextComponent name, ITextComponent biome) {
         Validate.notNull(name);
         this.x = x;
         this.y = y;
@@ -28,11 +30,11 @@ public class TargetPoint4d implements INBTSerializable<NBTTagCompound> {
     }
 
     public TargetPoint4d(NBTTagCompound nbt) {
-        this(0, 0, 0, 0, "", "");
+        this(0, 0, 0, 0, new TextComponentString(""), new TextComponentString(""));
         this.deserializeNBT(nbt);
     }
 
-    public TargetPoint4d(BlockPos pos, int dimension, String name, String biome) {
+    public TargetPoint4d(BlockPos pos, int dimension, ITextComponent name, ITextComponent biome) {
         this(pos.getX(), pos.getY(), pos.getZ(), dimension, name, biome);
     }
 
@@ -57,7 +59,7 @@ public class TargetPoint4d implements INBTSerializable<NBTTagCompound> {
         return dimension;
     }
 
-    public String getName() {
+    public ITextComponent getName() {
         return name;
     }
 
@@ -87,30 +89,30 @@ public class TargetPoint4d implements INBTSerializable<NBTTagCompound> {
         nbt.setInteger("Y", this.y);
         nbt.setInteger("Z", this.z);
         nbt.setInteger("dimension", this.dimension);
-        nbt.setString("name", this.name);
-        nbt.setString("biome", this.biome);
+        nbt.setString("name", ITextComponent.Serializer.componentToJson(name));
+        nbt.setString("biome", ITextComponent.Serializer.componentToJson(biome));
         return nbt;
     }
 
     @Override
     public void deserializeNBT(NBTTagCompound nbt) {
-        this.name = nbt.getString("name");
+        this.name = ITextComponent.Serializer.fromJsonLenient(nbt.getString("name"));
         this.dimension = nbt.getInteger("dimension");
         this.x = nbt.getInteger("X");
         this.y = nbt.getInteger("Y");
         this.z = nbt.getInteger("Z");
-        this.biome = nbt.getString("biome");
+        this.biome = ITextComponent.Serializer.fromJsonLenient(nbt.getString("biome"));
     }
 
-    public String getBiome() {
+    public ITextComponent getBiome() {
         return biome;
     }
 
-    public void setName(String name) {
+    public void setName(ITextComponent name) {
         this.name = name;
     }
 
-    public void setBiome(String biome) {
+    public void setBiome(ITextComponent biome) {
         this.biome = biome;
     }
 
