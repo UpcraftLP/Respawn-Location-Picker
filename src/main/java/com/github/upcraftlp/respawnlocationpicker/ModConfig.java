@@ -13,29 +13,37 @@ import static com.github.upcraftlp.respawnlocationpicker.Reference.MODID;
  */
 @SuppressWarnings("CanBeFinal")
 @Config(modid = MODID, name = "craftdevmods/" + MODID) //--> /config/craftdevmods/respawnlocationpicker.cfg
+@Config.LangKey("config.respawnLocations.configtitle")
 public class ModConfig {
 
     @Config.RangeInt(min = 0, max = 100)
-    @Config.Comment("maximum number of respawn locations a player can have")
+    @Config.Comment("Maximum number of respawn locations a player can have.")
+    @Config.LangKey("config.respawnLocations.locations")
     public static int respawnLocations = 10;
 
-    @Config.Comment("whether or not to include the global world spawn in the list of available respawn points")
+    @Config.Comment("Whether or not to include the global world spawn in the list of available respawn points.")
+    @Config.LangKey("config.respawnLocations.worldspawn")
     public static boolean showWorldSpawn = true;
 
     @Config.Comment("Wether or not players have the option to respawn around their grave.")
+    @Config.LangKey("config.respawnLocations.graves")
     public static boolean gravesEnabled = false;
 
     @Config.Comment("The radius in which the players respawn when picking the \"Last Death\" option.")
-    @Config.RangeInt(min = 100, max = 500)
+    @Config.LangKey("config.respawnLocations.range")
+    @Config.RangeInt(min = 0, max = 500)
     public static int graveRange = 100;
 
     @Config.Comment("Wether or not players have the option to respawn next to other players.")
+    @Config.LangKey("config.respawnLocations.players")
     public static boolean allowPlayerRespawn = false;
 
-    @Config.Comment("should players be allowed to add spawnpoints using /addspawnpoint")
+    @Config.Comment("Should players be allowed to add spawnpoints using /addspawnpoint.")
+    @Config.LangKey("config.respawnLocations.custom")
     public static boolean allowCustomSpawnpoints = true;
 
-    @Config.Comment("will players get the coordinates, biome, both or none if hovering over a waypoint?")
+    @Config.Comment("Will players get the coordinates, biome, both or none if hovering over a waypoint?")
+    @Config.LangKey("config.respawnLocations.display")
     public static SpawnPointDisplayMode displayMode = SpawnPointDisplayMode.BOTH;
 
     @Mod.EventBusSubscriber(modid = MODID)

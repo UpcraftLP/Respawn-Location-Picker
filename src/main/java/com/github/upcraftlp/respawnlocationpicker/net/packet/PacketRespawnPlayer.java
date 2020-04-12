@@ -1,10 +1,11 @@
 package com.github.upcraftlp.respawnlocationpicker.net.packet;
 
 import com.github.upcraftlp.respawnlocationpicker.ModConfig;
-import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
+import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
+import com.github.upcraftlp.respawnlocationpicker.util.RadiusHelper;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,7 +19,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-import javax.vecmath.Point4d;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +53,11 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
             targets.add(new TargetPoint4d(spawn, dimension, new TextComponentTranslation("gui.respawnLocation.world"), new TextComponentString(TargetHelper.getBiome(respawnWorld, spawn))));
         }
         if(ModConfig.gravesEnabled) {
+            listLength -= 1;
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-            BlockPos playerPos = player.getPosition();
             int dimension = player.world.provider.getRespawnDimension(player);
             World respawnWorld = server.getWorld(dimension);
+            BlockPos playerPos = RadiusHelper.getRandomRadiusPoint(player.getPosition(), ModConfig.graveRange, 20, respawnWorld, player);
             targets.add(new TargetPoint4d(playerPos, dimension, new TextComponentTranslation("gui.respawnLocation.grave"), new TextComponentString(TargetHelper.getBiome(respawnWorld, playerPos))));
         }
         targets.addAll(respawnLocations.getRespawnLocations(listLength));

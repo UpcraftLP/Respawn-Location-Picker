@@ -72,8 +72,7 @@ public class PacketSetRespawnLocation implements IMessage, IMessageHandler<Packe
         }
 
         if(ModConfig.gravesEnabled) {
-            int compareIndex = ModConfig.showWorldSpawn || locations.getLocationCount() == 0 ? 1 : 0;
-            if(message.targetIndex == compareIndex) {
+            if(message.targetIndex == 0) {
                 int dim = playerMP.dimension;
                 World w = server.getWorld(dim);
                 BlockPos pos = RadiusHelper.getRandomRadiusPoint(playerMP.getPosition(), ModConfig.graveRange, 20, w, playerMP);

@@ -40,6 +40,7 @@ public class GuiRespawnPlayers extends GuiScreen {
     public void initGui() {
         NetHandlerPlayClient handler = this.mc.player.connection;
         this.players = ENTRY_ORDERING.sortedCopy(handler.getPlayerInfoMap());
+        this.players.removeIf(e -> e.getGameProfile().equals(this.mc.getSession().getProfile()));
         populateButtons();
     }
 
@@ -50,7 +51,7 @@ public class GuiRespawnPlayers extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         GlStateManager.pushMatrix();
         GlStateManager.scale(2.0F, 2.0F, 2.0F);
-        this.drawCenteredString(this.fontRenderer, I18n.format("gui.respawnLocation.players"), this.width / 2 / 2, 15, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.format("gui.respawnlocationpicker.playerstitle"), this.width / 2 / 2, 15, 16777215);
         GlStateManager.popMatrix();
     }
 
