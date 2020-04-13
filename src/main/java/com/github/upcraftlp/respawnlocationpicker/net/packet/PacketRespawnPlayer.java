@@ -5,7 +5,6 @@ import com.github.upcraftlp.respawnlocationpicker.api.util.TargetHelper;
 import com.github.upcraftlp.respawnlocationpicker.api.util.TargetPoint4d;
 import com.github.upcraftlp.respawnlocationpicker.capability.CapabilityRespawnLocations;
 import com.github.upcraftlp.respawnlocationpicker.capability.IRespawnLocations;
-import com.github.upcraftlp.respawnlocationpicker.util.RadiusHelper;
 import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -57,7 +56,7 @@ public class PacketRespawnPlayer implements IMessage, IMessageHandler<PacketResp
             MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
             int dimension = player.world.provider.getRespawnDimension(player);
             World respawnWorld = server.getWorld(dimension);
-            BlockPos playerPos = RadiusHelper.getRandomRadiusPoint(player.getPosition(), ModConfig.graveRange, 20, respawnWorld, player);
+            BlockPos playerPos = player.getPosition();
             targets.add(new TargetPoint4d(playerPos, dimension, new TextComponentTranslation("gui.respawnLocation.grave"), new TextComponentString(TargetHelper.getBiome(respawnWorld, playerPos))));
         }
         targets.addAll(respawnLocations.getRespawnLocations(listLength));

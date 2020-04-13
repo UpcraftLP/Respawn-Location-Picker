@@ -14,7 +14,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.ResourceLocation;
@@ -87,15 +86,26 @@ public class CapabilityHandler {
         IBlockState state = world.getBlockState(pos);
         EntityPlayer player = event.getEntityPlayer();
         if(state.getBlock().isBed(state, world, pos, player)) {
-            if(state.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD) {
+            if(state.getProperties().containsKey(BlockBed.PART) && state.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD ) {
                 pos = pos.offset(state.getValue(BlockBed.FACING));
             }
-            TileEntityBed bed = (TileEntityBed)world.getTileEntity(pos);
-            IRespawnLocations locations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
-            boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), new TextComponentTranslation(bed.getItemStack().getTranslationKey() + ".name"), new TextComponentString(TargetHelper.getBiome(world, pos))));
-            if(result && world.isDaytime()) {
-                event.setCanceled(true);
-                player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
+
+            if(world.getTileEntity(pos) instanceof TileEntityBed) {
+                TileEntityBed bed = (TileEntityBed) world.getTileEntity(pos);
+                IRespawnLocations locations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
+                boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), new TextComponentTranslation(bed.getItemStack().getTranslationKey() + ".name"), new TextComponentString(TargetHelper.getBiome(world, pos))));
+                if (result && world.isDaytime()) {
+                    event.setCanceled(true);
+                    player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
+                }
+            } else {
+                TileEntity bed = world.getTileEntity(pos);
+                IRespawnLocations locations = player.getCapability(CapabilityRespawnLocations.CAPABILITY, null);
+                boolean result = locations.addRespawnLocation(new TargetPoint4d(pos.up(), world.provider.getDimension(), new TextComponentString("Bed"), new TextComponentString(TargetHelper.getBiome(world, pos))));
+                if (result && world.isDaytime()) {
+                    event.setCanceled(true);
+                    player.sendStatusMessage(new TextComponentTranslation("respawns.setBedSpawn.success").setStyle(new Style().setColor(TextFormatting.WHITE)), true);
+                }
             }
         }
     }
